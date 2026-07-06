@@ -3,6 +3,11 @@
   const VERSION = "0.12.0";
   const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
+  ["scholars_first_meeting", "creatives_first_meeting", "athletics_first_meeting"].forEach((id) => {
+    const event = STORY.events.minor[id];
+    if (event?.effects?.stats) delete event.effects.stats;
+  });
+
   function enforceVersion() {
     const footer = document.getElementById("versionLabel");
     const menu = document.getElementById("menuVersionLabel");
