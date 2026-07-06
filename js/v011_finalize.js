@@ -28,5 +28,7 @@
     document.body.appendChild(script);
   }
 
-  loadScript("js/v012_life_events.js", () => loadScript("js/v012_features.js"));
+  loadScript("js/v012_life_events.js", () => {
+    loadScript("js/v012_features.js", () => loadScript("js/v012_finalize.js"));
+  });
 })();
