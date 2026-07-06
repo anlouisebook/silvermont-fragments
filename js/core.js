@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  const VERSION = "0.7.0";
-  const SAVE_KEY = "silvermont_fragments_save_v0_7_0";
+  const VERSION = "0.8.0";
+  const SAVE_KEY = "silvermont_fragments_save_v0_8_0";
   const START_DATE = Object.freeze({ month: 9, day: 1 });
   const START_DAY_NAME = "Sunday";
   const SLICE_WEEKS = 4;
@@ -103,6 +103,13 @@
     if (roll < 0.15) return { key: "great", label: "Great success", multiplier: 1.5, penalty: 0 };
     if (roll < 0.80) return { key: "success", label: "Success", multiplier: 1, penalty: 0 };
     return { key: "failure", label: "Failure", multiplier: 0, penalty: -1 };
+  }
+
+  function outcomeIcon(outcomeKey) {
+    if (outcomeKey === "great") return "⭐";
+    if (outcomeKey === "success") return "👍";
+    if (outcomeKey === "failure") return "👎";
+    return "•";
   }
 
   function calculateActivityGain(baseGain, days, weekendMultiplier, outcomeMultiplier) {
@@ -342,6 +349,7 @@
     normalizeFirstName,
     pronounSet,
     rollOutcomeFromNumber,
+    outcomeIcon,
     calculateActivityGain,
     calculateActivityDelta,
     applyTraitRollModifier,
