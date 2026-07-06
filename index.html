@@ -6,14 +6,12 @@
   <meta name="description" content="Silvermont: Fragments — a text-based otome life-sim vertical slice." />
   <title>Silvermont: Fragments</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/v080_patch.css" />
 </head>
 <body>
   <main id="game" class="game-shell">
     <header class="topbar">
-      <div>
-        <h1>Silvermont: Fragments</h1>
-        <p id="chapterLabel">Prologue</p>
-      </div>
+      <div><h1>Silvermont: Fragments</h1><p id="chapterLabel">Prologue</p></div>
       <div class="topbar-actions">
         <button id="historyBtn" class="ghost-btn" type="button">History</button>
         <button id="saveBtn" class="ghost-btn" type="button">Save</button>
@@ -22,225 +20,91 @@
     </header>
 
     <section class="status-strip" aria-label="Game status">
-      <span id="ageLabel">Age 8</span>
-      <span id="weekLabel">Week 0 / 4</span>
-      <span id="dayLabel">September 1 · Sunday</span>
+      <span id="ageLabel">Age 8</span><span id="weekLabel">Week 0 / 4</span><span id="dayLabel">September 1 · Sunday</span>
     </section>
 
     <section class="story-stage" id="vnStage">
       <div id="dialoguePanel" class="dialogue-panel" tabindex="0" role="region" aria-label="Dialogue">
-        <aside id="portrait" class="speaker-portrait hidden" aria-label="Speaker portrait">
-          <div id="portraitPixel" class="pixel-portrait" aria-hidden="true"></div>
-        </aside>
-
-        <div class="dialogue-content">
-          <div id="speakerName" class="speaker-name">Narrator</div>
-          <p id="dialogueText">Silvermont waits behind the menu.</p>
-          <div id="choiceArea" class="choice-area"></div>
-        </div>
+        <aside id="portrait" class="speaker-portrait hidden" aria-label="Speaker portrait"><div id="portraitPixel" class="pixel-portrait" aria-hidden="true"></div></aside>
+        <div class="dialogue-content"><div id="speakerName" class="speaker-name">Narrator</div><p id="dialogueText">Silvermont waits behind the menu.</p><div id="choiceArea" class="choice-area"></div></div>
       </div>
     </section>
 
     <section id="mainMenuScreen" class="modal-screen menu-screen" aria-modal="true" role="dialog" aria-labelledby="mainMenuTitle">
       <div class="menu-card">
-        <p class="menu-kicker">A childhood mystery life-sim</p>
-        <h2 id="mainMenuTitle">Silvermont: Fragments</h2>
+        <p class="menu-kicker">A childhood mystery life-sim</p><h2 id="mainMenuTitle">Silvermont: Fragments</h2>
         <p class="menu-copy">Build a life. Choose who to trust. Remember what someone wanted buried.</p>
         <div class="menu-actions">
           <button id="newGameMenuBtn" class="primary-btn menu-primary" type="button">New Game</button>
           <button id="continueMenuBtn" class="ghost-btn menu-secondary" type="button">Continue</button>
           <button id="onlinePlayMenuBtn" class="ghost-btn menu-secondary" type="button" disabled>Play Online</button>
         </div>
-        <span id="menuVersionLabel" class="menu-version">v0.7.0</span>
+        <span id="menuVersionLabel" class="menu-version">v0.8.0</span>
       </div>
     </section>
 
     <section id="creatorScreen" class="modal-screen hidden" aria-modal="true" role="dialog" aria-labelledby="creatorTitle">
       <div class="modal-card creator-card">
-        <div class="modal-heading">
-          <div>
-            <h2 id="creatorTitle">Create the protagonist</h2>
-            <p>Female protagonist canon; pronouns are selectable. Surname: <strong>Evans</strong>.</p>
-          </div>
-          <span id="traitPointsBadge" class="points-badge">3 points remaining</span>
-        </div>
-
+        <div class="modal-heading"><div><h2 id="creatorTitle">Create the protagonist</h2><p>Female protagonist canon; pronouns are selectable. Surname: <strong>Evans</strong>.</p></div><span id="traitPointsBadge" class="points-badge">3 points remaining</span></div>
         <div class="creator-grid">
-          <fieldset>
-            <legend>Identity</legend>
-            <label>
-              First name
-              <input id="firstNameInput" type="text" maxlength="20" placeholder="Lilianna" />
-            </label>
-            <label>
-              Pronouns
-              <select id="pronounsSelect">
-                <option value="she">She / Her</option>
-                <option value="he">He / Him</option>
-                <option value="they">They / Them</option>
-              </select>
-            </label>
+          <fieldset><legend>Identity</legend>
+            <label>First name<input id="firstNameInput" type="text" maxlength="20" placeholder="Lilianna" /></label>
+            <label>Pronouns<select id="pronounsSelect"><option value="she">She / Her</option><option value="he">He / Him</option><option value="they">They / Them</option></select></label>
             <div class="form-row two">
-              <label>
-                Birth month
-                <select id="birthMonthSelect">
-                  <option value="1">January</option><option value="2">February</option><option value="3">March</option>
-                  <option value="4">April</option><option value="5">May</option><option value="6">June</option>
-                  <option value="7">July</option><option value="8">August</option><option value="9" selected>September</option>
-                  <option value="10">October</option><option value="11">November</option><option value="12">December</option>
-                </select>
-              </label>
-              <label>
-                Birth day
-                <select id="birthDaySelect"></select>
-              </label>
+              <label>Birth month<select id="birthMonthSelect"><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9" selected>September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></label>
+              <label>Birth day<select id="birthDaySelect"></select></label>
             </div>
           </fieldset>
-
-          <fieldset>
-            <legend>Appearance</legend>
-            <div class="form-row two">
-              <label>Hair color
-                <select id="hairColorSelect"><option>Black</option><option selected>Dark Brown</option><option>Brown</option><option>Auburn</option><option>Blonde</option></select>
-              </label>
-              <label>Hair style
-                <select id="hairStyleSelect"><option>Short</option><option>Bob</option><option selected>Shoulder-length</option><option>Long</option><option>Curly</option></select>
-              </label>
-              <label>Eye color
-                <select id="eyeColorSelect"><option selected>Brown</option><option>Hazel</option><option>Green</option><option>Blue</option><option>Gray</option></select>
-              </label>
-              <label>Skin tone
-                <select id="skinToneSelect"><option>Fair</option><option>Light</option><option selected>Medium</option><option>Tan</option><option>Deep</option></select>
-              </label>
-              <label>Height impression
-                <select id="heightSelect"><option>Petite</option><option selected>Average</option><option>Tall</option></select>
-              </label>
-              <label>Build impression
-                <select id="buildSelect"><option>Slim</option><option selected>Average</option><option>Sturdy</option><option>Athletic</option></select>
-              </label>
-            </div>
-            <p class="form-note">Appearance changes flavor text only.</p>
-          </fieldset>
+          <fieldset><legend>Appearance</legend><div class="form-row two">
+            <label>Hair color<select id="hairColorSelect"><option>Black</option><option selected>Dark Brown</option><option>Brown</option><option>Auburn</option><option>Blonde</option></select></label>
+            <label>Hair style<select id="hairStyleSelect"><option>Short</option><option>Bob</option><option selected>Shoulder-length</option><option>Long</option><option>Curly</option></select></label>
+            <label>Eye color<select id="eyeColorSelect"><option selected>Brown</option><option>Hazel</option><option>Green</option><option>Blue</option><option>Gray</option></select></label>
+            <label>Skin tone<select id="skinToneSelect"><option>Fair</option><option>Light</option><option selected>Medium</option><option>Tan</option><option>Deep</option></select></label>
+            <label>Height impression<select id="heightSelect"><option>Petite</option><option selected>Average</option><option>Tall</option></select></label>
+            <label>Build impression<select id="buildSelect"><option>Slim</option><option selected>Average</option><option>Sturdy</option><option>Athletic</option></select></label>
+          </div><p class="form-note">Appearance changes flavor text only.</p></fieldset>
         </div>
-
-        <fieldset>
-          <legend>Emotional state <span class="legend-note">Choose one · free</span></legend>
-          <div id="emotionChoices" class="option-grid four">
-            <label class="select-card"><input type="radio" name="emotion" value="Calm" checked /><span><strong>Calm</strong><small>Steady under pressure</small></span></label>
-            <label class="select-card"><input type="radio" name="emotion" value="Anxious" /><span><strong>Anxious</strong><small>Alert to uncertainty</small></span></label>
-            <label class="select-card"><input type="radio" name="emotion" value="Guarded" /><span><strong>Guarded</strong><small>Slow to trust</small></span></label>
-            <label class="select-card"><input type="radio" name="emotion" value="Curious" /><span><strong>Curious</strong><small>Drawn to questions</small></span></label>
-          </div>
-        </fieldset>
-
+        <fieldset><legend>Emotional state <span class="legend-note">Choose one · free</span></legend><div id="emotionChoices" class="option-grid four">
+          <label class="select-card"><input type="radio" name="emotion" value="Calm" checked /><span><strong>Calm</strong><small>Steady under pressure</small></span></label>
+          <label class="select-card"><input type="radio" name="emotion" value="Anxious" /><span><strong>Anxious</strong><small>Alert to uncertainty</small></span></label>
+          <label class="select-card"><input type="radio" name="emotion" value="Guarded" /><span><strong>Guarded</strong><small>Slow to trust</small></span></label>
+          <label class="select-card"><input type="radio" name="emotion" value="Curious" /><span><strong>Curious</strong><small>Drawn to questions</small></span></label>
+        </div></fieldset>
         <div class="creator-grid traits-grid">
-          <fieldset>
-            <legend>Positive traits <span class="legend-note">Cost 1 point each</span></legend>
-            <div id="positiveTraitChoices" class="trait-list">
-              <label><input type="checkbox" value="Studious" /><span>Studious</span></label>
-              <label><input type="checkbox" value="Sociable" /><span>Sociable</span></label>
-              <label><input type="checkbox" value="Creative" /><span>Creative</span></label>
-              <label><input type="checkbox" value="Athletic" /><span>Athletic</span></label>
-              <label><input type="checkbox" value="Compassionate" /><span>Compassionate</span></label>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend>Negative traits <span class="legend-note">Refund 1 point · max 2</span></legend>
-            <div id="negativeTraitChoices" class="trait-list">
-              <label><input type="checkbox" value="Shy" /><span>Shy</span></label>
-              <label><input type="checkbox" value="Impulsive" /><span>Impulsive</span></label>
-              <label><input type="checkbox" value="Stubborn" /><span>Stubborn</span></label>
-              <label><input type="checkbox" value="Sensitive" /><span>Sensitive</span></label>
-              <label><input type="checkbox" value="Distractible" /><span>Distractible</span></label>
-            </div>
-          </fieldset>
+          <fieldset><legend>Positive traits <span class="legend-note">Cost 1 point each</span></legend><div id="positiveTraitChoices" class="trait-list"><label><input type="checkbox" value="Studious" /><span>Studious</span></label><label><input type="checkbox" value="Sociable" /><span>Sociable</span></label><label><input type="checkbox" value="Creative" /><span>Creative</span></label><label><input type="checkbox" value="Athletic" /><span>Athletic</span></label><label><input type="checkbox" value="Compassionate" /><span>Compassionate</span></label></div></fieldset>
+          <fieldset><legend>Negative traits <span class="legend-note">Refund 1 point · max 2</span></legend><div id="negativeTraitChoices" class="trait-list"><label><input type="checkbox" value="Shy" /><span>Shy</span></label><label><input type="checkbox" value="Impulsive" /><span>Impulsive</span></label><label><input type="checkbox" value="Stubborn" /><span>Stubborn</span></label><label><input type="checkbox" value="Sensitive" /><span>Sensitive</span></label><label><input type="checkbox" value="Distractible" /><span>Distractible</span></label></div></fieldset>
         </div>
-
-        <p id="creatorError" class="form-error hidden" role="alert"></p>
-        <button id="confirmCharacterBtn" class="primary-btn" type="button">Begin Story</button>
+        <p id="creatorError" class="form-error hidden" role="alert"></p><button id="confirmCharacterBtn" class="primary-btn" type="button">Begin Story</button>
       </div>
     </section>
 
-    <section id="plannerScreen" class="modal-screen hidden" aria-modal="true" role="dialog">
-      <div class="modal-card wide">
-        <div class="modal-heading">
-          <div>
-            <h2 id="plannerTitle">Plan Week 1</h2>
-            <p>Choose one weekday focus, one Saturday focus, and one Sunday focus. Outcomes: 15% Great · 65% Success · 20% Fail (−1 max).</p>
-          </div>
-          <span class="weekend-badge">Weekend gains ×2</span>
-        </div>
+    <section id="plannerScreen" class="modal-screen hidden" aria-modal="true" role="dialog"><div class="modal-card wide">
+      <div class="modal-heading"><div><h2 id="plannerTitle">Plan Week 1</h2><p>Choose one weekday focus, one Saturday focus, and one Sunday focus. Outcomes: 15% Great · 65% Success · 20% Fail (−1 max).</p></div><span class="weekend-badge">Weekend gains ×2</span></div>
+      <div class="planner-grid"><div><h3>Monday–Friday</h3><div id="weekdayChoices" class="activity-list"></div></div><div><h3>Saturday</h3><div id="saturdayChoices" class="activity-list"></div></div><div><h3>Sunday</h3><div id="sundayChoices" class="activity-list"></div></div></div>
+      <div id="plannerPreview" class="planner-preview">Select all three focuses.</div><button id="beginWeekBtn" class="primary-btn" type="button" disabled>Begin Week</button>
+    </div></section>
 
-        <div class="planner-grid">
-          <div><h3>Monday–Friday</h3><div id="weekdayChoices" class="activity-list"></div></div>
-          <div><h3>Saturday</h3><div id="saturdayChoices" class="activity-list"></div></div>
-          <div><h3>Sunday</h3><div id="sundayChoices" class="activity-list"></div></div>
-        </div>
+    <section id="dayResolutionScreen" class="modal-screen hidden" aria-modal="true" role="dialog" aria-labelledby="resolutionTitle"><div class="modal-card resolution-card">
+      <div class="modal-heading"><div><h2 id="resolutionTitle">Week in progress</h2><p id="resolutionDate">September 1 · Sunday</p></div><button id="skipResolutionBtn" class="ghost-btn" type="button">Skip</button></div>
+      <div class="pixel-loading" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="resolution-readout"><span id="resolutionIcon" class="resolution-icon outcome-success" aria-hidden="true">👍</span><strong id="resolutionActivity">Study</strong><span id="resolutionOutcome">Success</span><b id="resolutionGain">+2 Intelligence</b></div>
+      <div id="resolutionProgress" class="resolution-progress" aria-label="Week progress"></div>
+    </div></section>
 
-        <div id="plannerPreview" class="planner-preview">Select all three focuses.</div>
-        <button id="beginWeekBtn" class="primary-btn" type="button" disabled>Begin Week</button>
-      </div>
-    </section>
-
-
-    <section id="dayResolutionScreen" class="modal-screen hidden" aria-modal="true" role="dialog" aria-labelledby="resolutionTitle">
-      <div class="modal-card resolution-card">
-        <div class="modal-heading">
-          <div>
-            <h2 id="resolutionTitle">Week in progress</h2>
-            <p id="resolutionDate">September 1 · Sunday</p>
-          </div>
-          <button id="skipResolutionBtn" class="ghost-btn" type="button">Skip</button>
-        </div>
-
-        <div class="pixel-loading" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-
-        <div class="resolution-readout">
-          <strong id="resolutionActivity">Study</strong>
-          <span id="resolutionOutcome">Success</span>
-          <b id="resolutionGain">+2 Intelligence</b>
-        </div>
-
-        <div id="resolutionProgress" class="resolution-progress" aria-label="Week progress"></div>
-      </div>
-    </section>
-
-    <section id="summaryScreen" class="modal-screen hidden" aria-modal="true" role="dialog">
-      <div class="modal-card wide">
-        <h2 id="summaryTitle">Week Summary</h2>
-        <div id="summaryResults" class="summary-results"></div>
-        <div id="statChanges" class="stat-changes"></div>
-        <button id="continueSummaryBtn" class="primary-btn" type="button">Continue</button>
-      </div>
-    </section>
-
-    <section id="historyScreen" class="modal-screen hidden" aria-modal="true" role="dialog">
-      <div class="modal-card history-card">
-        <div class="modal-heading">
-          <div><h2>Dialogue History</h2><p>Previous spoken and narrated lines from this playthrough.</p></div>
-          <button id="closeHistoryBtn" class="ghost-btn" type="button">Close</button>
-        </div>
-        <div id="historyList" class="history-list" aria-live="polite"></div>
-      </div>
-    </section>
-
-    <section id="statsPanel" class="stats-panel" aria-label="Stats">
-      <h2>Stats</h2>
-      <div id="statsGrid" class="stats-grid"></div>
-    </section>
-
-    <footer><span>Silvermont: Fragments</span><span id="versionLabel">v0.7.0</span></footer>
+    <section id="summaryScreen" class="modal-screen hidden" aria-modal="true" role="dialog"><div class="modal-card wide"><h2 id="summaryTitle">Week Summary</h2><div id="summaryResults" class="summary-results"></div><div id="statChanges" class="stat-changes"></div><button id="continueSummaryBtn" class="primary-btn" type="button">Continue</button></div></section>
+    <section id="historyScreen" class="modal-screen hidden" aria-modal="true" role="dialog"><div class="modal-card history-card"><div class="modal-heading"><div><h2>Dialogue History</h2><p>Previous spoken and narrated lines from this playthrough.</p></div><button id="closeHistoryBtn" class="ghost-btn" type="button">Close</button></div><div id="historyList" class="history-list" aria-live="polite"></div></div></section>
+    <section id="statsPanel" class="stats-panel" aria-label="Stats"><h2>Stats</h2><div id="statsGrid" class="stats-grid"></div></section>
+    <footer><span>Silvermont: Fragments</span><span id="versionLabel">v0.8.0</span></footer>
   </main>
 
   <script src="js/config.js"></script>
+  <script src="js/events_major.js"></script>
+  <script src="js/events_home.js"></script>
+  <script src="js/events_social.js"></script>
+  <script src="js/events_world.js"></script>
   <script src="js/story.js"></script>
   <script src="js/core.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/v080_runtime_patch.js"></script>
 </body>
 </html>
