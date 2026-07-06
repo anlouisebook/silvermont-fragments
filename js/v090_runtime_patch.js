@@ -1,0 +1,158 @@
+"use strict";
+(function () {
+  const PLANNER_DAYS = window.GameCore.PLANNER_DAYS;
+  const icon = document.getElementById("resolutionIcon");
+
+  const originalFlashMessage = flashMessage;
+  flashMessage = function (message) {
+    originalFlashMessage(String(message || "").replace(/v0\.[78]\.0/g, "v0.9.0"));
+  };
+
+  selectStoryChoice = function (choice) {
+    applyChoiceEffect(choice.effect || {});
+    if (Array.isArray(choice.scenes) && choice.scenes.length) {
+      state.sceneQueue.splice(state.sceneIndex + 1, 0, ...clone(choice.scenes));
+    }
+    advanceScene();
+  };
+
+  beginPrologue = function () {
+    state.currentMode = "story";
+    state.currentDate = { ...window.GameCore.PROLOGUE_DATE };
+    state.day = "Sunday";
+    state.dayIndex = 0;
+    state.sceneQueue = clone(STORY.prologue);
+    state.sceneIndex = 0;
+    showScene(state.sceneQueue[0]);
+  };
+
+  buildPixelSprite = function (character, emotion) {
+    const size = 16;
+    const grid = Array(size * size).fill("px-clear");
+    const set = (x, y, token) => { if (x >= 0 && x < size && y >= 0 && y < size) grid[y * size + x] = token; };
+    const fill = (x1, y1, x2, y2, token) => { for (let y = y1; y <= y2; y += 1) for (let x = x1; x <= x2; x += 1) set(x, y, token); };
+
+    fill(3, 13, 12, 15, "px-clothes");
+    fill(6, 11, 9, 13, "px-skin");
+    fill(4, 4, 11, 11, "px-skin");
+    fill(3, 6, 3, 9, "px-skin"); fill(12, 6, 12, 9, "px-skin");
+    fill(4, 9, 4, 11, "px-shadow"); fill(11, 8, 11, 11, "px-shadow");
+    set(5, 5, "px-highlight"); set(10, 5, "px-highlight");
+
+    const hair = {
+      agnes: [[5,1,10,1],[3,2,12,4],[2,4,4,10],[11,4,13,10],[3,10,4,12],[11,10,12,12]],
+      dorian: [[5,1,11,1],[3,2,12,3],[2,3,5,5],[10,3,13,5],[3,5,3,7]],
+      ethan: [[4,1,11,1],[2,2,13,3],[2,4,5,5],[10,4,13,6],[3,6,3,8]],
+      fern: [[4,1,11,1],[2,2,13,4],[1,4,3,11],[12,4,14,11],[2,11,4,13],[11,11,13,13]],
+      mother: [[4,1,11,1],[2,2,13,4],[2,5,3,12],[12,5,13,12],[3,12,5,14],[10,12,12,14]],
+      generic: [[4,1,11,2],[3,2,12,4],[3,4,4,6],[11,4,12,6]]
+    };
+    (hair[character] || hair.generic).forEach(([x1, y1, x2, y2]) => fill(x1, y1, x2, y2, "px-hair"));
+    set(5, 2, "px-hair-light"); set(6, 2, "px-hair-light");
+    if (character === "agnes") { set(7, 13, "px-accent"); set(8, 13, "px-accent"); }
+    if (character === "dorian") fill(7, 13, 8, 15, "px-accent");
+    if (character === "ethan") { set(5, 14, "px-accent"); set(10, 14, "px-accent"); }
+    if (character === "fern") fill(4, 14, 5, 15, "px-accent");
+    if (character === "mother") fill(7, 14, 8, 15, "px-accent");
+
+    set(5, 6, "px-brow"); set(6, 6, "px-brow"); set(9, 6, "px-brow"); set(10, 6, "px-brow");
+    set(5, 7, "px-white"); set(6, 7, "px-eye"); set(9, 7, "px-eye"); set(10, 7, "px-white");
+    set(7, 9, "px-shadow");
+    if (emotion === "happy") {
+      set(5, 7, "px-hair"); set(10, 7, "px-hair"); set(6, 10, "px-mouth"); set(9, 10, "px-mouth"); fill(7, 11, 8, 11, "px-mouth");
+    } else if (emotion === "sad" || emotion === "concerned") {
+      set(5, 5, "px-brow"); set(10, 5, "px-brow"); fill(7, 10, 8, 10, "px-mouth"); set(6, 11, "px-mouth"); set(9, 11, "px-mouth");
+    } else if (["tense", "serious", "guarded"].includes(emotion)) {
+      fill(5, 6, 6, 6, "px-brow"); fill(9, 6, 10, 6, "px-brow"); fill(6, 10, 9, 10, "px-mouth");
+    } else if (emotion === "afraid") {
+      fill(5, 7, 6, 8, "px-white"); fill(9, 7, 10, 8, "px-white"); set(6, 8, "px-eye"); set(9, 8, "px-eye"); fill(7, 10, 8, 11, "px-mouth");
+    } else if (emotion === "nostalgic" || emotion === "gentle") {
+      set(6, 10, "px-mouth"); set(9, 10, "px-mouth"); fill(7, 11, 8, 11, "px-mouth");
+    } else fill(7, 10, 8, 10, "px-mouth");
+    return grid;
+  };
+
+  function buildCalendarPlanner() {
+    const calendar = $("plannerCalendar");
+    calendar.innerHTML = "";
+    PLANNER_DAYS.forEach((dayKey, index) => {
+      const column = document.createElement("section");
+      column.className = `calendar-day ${["saturday", "sunday"].includes(dayKey) ? "weekend" : ""}`;
+      const date = addDays(START_DATE, (state.week - 1) * WEEK_LENGTH + index);
+      const heading = document.createElement("h3");
+      heading.innerHTML = `<span>${capitalize(dayKey.slice(0, 3))}</span><small>${dateLabel(date)}</small>`;
+      column.appendChild(heading);
+      const choices = document.createElement("div");
+      choices.className = "calendar-activity-list";
+      ACTIVITIES.forEach((activity) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "activity-btn calendar-activity-btn";
+        btn.dataset.dayKey = dayKey;
+        btn.dataset.activityId = activity.id;
+        btn.innerHTML = `<strong>${activity.name}</strong><small>${activity.note}</small>`;
+        btn.addEventListener("click", () => { state.planner[dayKey] = activity.id; renderPlannerSelection(); });
+        choices.appendChild(btn);
+      });
+      column.appendChild(choices);
+      calendar.appendChild(column);
+    });
+  }
+
+  showPlannerView = function () {
+    ui.plannerTitle.textContent = `Plan Week ${state.week}`;
+    buildCalendarPlanner();
+    renderPlannerSelection();
+    ui.plannerScreen.classList.remove("hidden");
+    updateStatus();
+  };
+
+  renderPlannerSelection = function () {
+    $("plannerCalendar").querySelectorAll(".calendar-activity-btn").forEach((btn) => {
+      btn.classList.toggle("selected", state.planner[btn.dataset.dayKey] === btn.dataset.activityId);
+    });
+    const ready = PLANNER_DAYS.every((dayKey) => Boolean(state.planner[dayKey]));
+    ui.beginWeek.disabled = !ready;
+    if (!ready) {
+      const remaining = PLANNER_DAYS.filter((dayKey) => !state.planner[dayKey]).length;
+      ui.plannerPreview.textContent = `Choose one activity for each day. ${remaining} day${remaining === 1 ? "" : "s"} remaining.`;
+      return;
+    }
+    const copied = state.week > 1 && state.plannerHistory?.[state.week - 1] ? `Copied from Week ${state.week - 1}. ` : "";
+    ui.plannerPreview.textContent = `${copied}All seven days are planned. Weekend positive gains remain ×2.`;
+  };
+
+  birthdayEventChoice = function (day) {
+    const event = STORY.events.minor.birthday;
+    const counts = state.resolution?.eventCounts || { major: 0, minor: 0 };
+    if (counts.minor >= WEEKLY_EVENT_LIMITS.minor) return null;
+    if (eventEligible(event, state, day.absoluteDayIndex, day.date, day.activityId)) return { type: "minor", id: "birthday" };
+    return null;
+  };
+
+  chooseEventForDay = function (day) {
+    const counts = state.resolution?.eventCounts || { major: 0, minor: 0 };
+    return birthdayEventChoice(day) || chooseDailyStoryEvent(
+      STORY.events.major, STORY.events.minor, state,
+      day.absoluteDayIndex, day.date, Math.random,
+      counts, WEEKLY_EVENT_LIMITS, day.activityId
+    );
+  };
+
+  renderDailyResolution = function (day) {
+    ui.resolutionTitle.textContent = `Week ${state.week} · Day ${state.resolution.index + 1} of 7`;
+    ui.resolutionDate.textContent = `${dateLabel(day.date)} · ${day.dayName}`;
+    ui.resolutionActivity.textContent = day.activityName;
+    ui.resolutionOutcome.textContent = day.outcomeLabel;
+    if (icon) {
+      icon.textContent = window.GameCore.outcomeIcon(day.outcomeKey);
+      icon.className = `resolution-icon outcome-${day.outcomeKey || "neutral"}`;
+    }
+    ui.resolutionGain.textContent = `${signedDelta(day.gain)} ${day.stat}`;
+    ui.resolutionGain.classList.toggle("zero", day.gain === 0);
+    ui.resolutionGain.classList.toggle("negative", day.gain < 0);
+    renderResolutionProgress();
+    ui.resolutionScreen.classList.remove("hidden");
+    updateStatus();
+  };
+})();
