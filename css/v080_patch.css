@@ -1,0 +1,31 @@
+/* v0.8.0 interaction and result-icon patch */
+body, .game-shell, .modal-screen, button, label, .dialogue-panel, .stats-panel, footer {
+  -webkit-user-select: none;
+  user-select: none;
+}
+input, select, textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.resolution-icon {
+  width: 64px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 4px;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--line);
+  border-radius: 4px;
+  background: #eee7e3;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  image-rendering: pixelated;
+  box-shadow: 4px 4px 0 rgba(45, 38, 51, .12);
+}
+.resolution-icon.outcome-great { background: #fff0b8; border-color: #c89658; }
+.resolution-icon.outcome-success { background: #dfe9df; border-color: #6d8d72; }
+.resolution-icon.outcome-failure { background: #f4dddd; border-color: #a35757; }
+.resolution-icon.outcome-neutral { color: var(--muted); }
+@media (max-width: 680px) {
+  .resolution-icon { width: 56px; font-size: 1.75rem; }
+}
