@@ -20,4 +20,13 @@
   document.getElementById("menuBtn")?.addEventListener("click", enforceV011Ui);
   document.getElementById("newGameMenuBtn")?.addEventListener("click", enforceV011Ui);
   enforceV011Ui();
+
+  function loadScript(src, onload) {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = onload || null;
+    document.body.appendChild(script);
+  }
+
+  loadScript("js/v012_life_events.js", () => loadScript("js/v012_features.js"));
 })();
