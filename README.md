@@ -1,45 +1,53 @@
-# Silvermont: Fragments v0.11.0
+# Silvermont: Fragments v0.12.0
 
 Text-based HTML otome/life-sim vertical slice.
 
-## v0.11.0
+## v0.12.0
 
-- Week 1 runs exact-date events only; random major/minor events resume from Week 2.
-- Added visible story section cards:
-  - `PROLOGUE — Arrival in Silvermont`
-  - `END OF PROLOGUE — A New Week Begins`
-  - `CHAPTER 1 — First Days`
-- Expanded the prologue to 40 scenes using established Silvermont canon: Agnes, Dorian, Whitmore Estates, Mother's Necklace, the new home, and an early accident-memory fragment.
-- Added 3 manual save slots plus 1 autosave slot.
-- Save opens slot selection; Continue opens load-slot selection.
-- Slot metadata shows week, date, age, and save timestamp.
-- Autosaves when a planned week opens and after weekly summary progression.
-- Added Event Journal sections for completed events, clues, important people, unresolved mysteries, and remembered choices.
-- Added Relationship Moments: hidden relationship changes surface as qualitative messages without exposing numeric values.
-- Added Choice Memory stored in game state and save slots. Recent choices appear in the Journal.
-- Added `window.SilvermontChoiceMemory` helper for future dialogue references.
-- Added gated Debug tools. The button appears only when `window.SILVERMONT_DEBUG_MODE` is true.
-- Debug tools include event trigger, date/week editing, stat editing, flag toggles, event history, read-history reset, and save-slot reset.
-- Added `window.SilvermontDebug.registerTool(label, action)` for future debug features.
+- Fixed Continue/load-slot modal stacking: the main menu hides while Load Game is open and the slot panel is placed above menu overlays.
+- Added event-chain state and ordering for:
+  - Ethan intro → second meeting → shared swing
+  - Fern intro → shared notes → library promise
+  - Home guardian scenes
+  - Accident fragments
+  - Club fair → selected club first meeting
+- Ported the missing Ethan and Fern follow-up scenes from the uploaded Life v63 Ren'Py project.
+- Added actual stat-gain modifiers in addition to existing outcome-probability modifiers:
+  - matching positive trait `+1`
+  - matching negative trait `-1`
+  - Calm: `+1 Help at Home`
+  - Anxious: `+1 Study`, `-1 Socialize`
+  - Guarded: `+1 Study`, `-1 Socialize`
+  - Curious: `+1 Study`, `+1 Draw & Create`
+  - weekend ×2 applies after these modifiers
+  - failure remains exactly `-1`
+- Added Life-based clubs with one-club-only membership and an option to join none:
+  - Scholars Society — Wednesday — Intelligence +2 — Fern is a member
+  - Creative Arts Club — Thursday — Creativity +2
+  - Athletics Club — Friday — Fitness +2
+- Club Fair becomes available after Fern's introduction.
+- Attending a club meeting replaces that day's normal planner activity and disables activity selection for that day.
+- The player may skip a club meeting and choose a normal activity instead.
+- Skipping can permanently miss tagged club events; first-meeting events are currently missable.
+- Club events use `clubTags`; first-meeting events trigger only for the joined club while attending.
+- Added debug helpers for chain-state inspection and clearing club membership.
+
+## v0.11.0 retained
+
+- Week 1 exact-date events only.
+- Prologue/End of Prologue/Chapter 1 section cards.
+- Expanded 40-scene prologue.
+- 3 manual save slots + autosave.
+- Event Journal, Relationship Moments, and Choice Memory.
+- Gated extensible Debug tools.
 
 ## Debug mode
 
-The current development build defaults Debug mode to on when no explicit value is supplied.
-
-To disable it before `v011_features.js` loads:
+The development build defaults Debug mode to on when no explicit value is supplied.
 
 ```js
 window.SILVERMONT_DEBUG_MODE = false;
 ```
-
-## v0.10.0 retained
-
-- Exact-date scheduling with `triggerDate: { month, day }` and earliest-eligible fallback.
-- Ethan protected for September 1; Fern protected for September 2.
-- Narrator label removed.
-- Persistent `Skip Read` for completed content.
-- Detailed 64×64 canvas pixel portraits.
-- Play Online menu item removed.
 
 ## Exact-date event example
 
@@ -54,8 +62,11 @@ mystery_event: {
 }
 ```
 
-If `prior_clue_found` is false on September 12, the event waits and triggers on the earliest later eligible day after the flag becomes true.
+If requirements are false on the target date, the event waits for the earliest later eligible day.
 
-## Tests
+## Validation
 
-Open `tests.html` for the existing automated suite. v0.11 also passed JavaScript syntax validation and a module-initialization smoke test.
+- `v012_life_events.js` syntax: pass
+- `v012_features.js` syntax: pass
+- v0.12 smoke test: pass for Life follow-ups, trait/personality gain modifiers, weekend ordering, failure `-1`, Club Fair chain, club join state, and Continue panel stacking
+- Existing `tests.html` remains available for the older automated suite
