@@ -26,7 +26,7 @@
     <section class="story-stage" id="vnStage">
       <div id="dialoguePanel" class="dialogue-panel" tabindex="0" role="region" aria-label="Dialogue">
         <aside id="portrait" class="speaker-portrait hidden" aria-label="Speaker portrait"><div id="portraitPixel" class="pixel-portrait" aria-hidden="true"></div></aside>
-        <div class="dialogue-content"><div id="speakerName" class="speaker-name">Narrator</div><p id="dialogueText">Silvermont waits behind the menu.</p><div id="choiceArea" class="choice-area"></div></div>
+        <div class="dialogue-content"><div id="speakerName" class="speaker-name"></div><p id="dialogueText">Silvermont waits behind the menu.</p><div id="choiceArea" class="choice-area"></div></div>
       </div>
     </section>
 
@@ -37,9 +37,8 @@
         <div class="menu-actions">
           <button id="newGameMenuBtn" class="primary-btn menu-primary" type="button">New Game</button>
           <button id="continueMenuBtn" class="ghost-btn menu-secondary" type="button">Continue</button>
-          <button id="onlinePlayMenuBtn" class="ghost-btn menu-secondary" type="button" disabled>Play Online</button>
         </div>
-        <span id="menuVersionLabel" class="menu-version">v0.8.0</span>
+        <span id="menuVersionLabel" class="menu-version">v0.10.0</span>
       </div>
     </section>
 
@@ -94,7 +93,7 @@
     <section id="summaryScreen" class="modal-screen hidden" aria-modal="true" role="dialog"><div class="modal-card wide"><h2 id="summaryTitle">Week Summary</h2><div id="summaryResults" class="summary-results"></div><div id="statChanges" class="stat-changes"></div><button id="continueSummaryBtn" class="primary-btn" type="button">Continue</button></div></section>
     <section id="historyScreen" class="modal-screen hidden" aria-modal="true" role="dialog"><div class="modal-card history-card"><div class="modal-heading"><div><h2>Dialogue History</h2><p>Previous spoken and narrated lines from this playthrough.</p></div><button id="closeHistoryBtn" class="ghost-btn" type="button">Close</button></div><div id="historyList" class="history-list" aria-live="polite"></div></div></section>
     <section id="statsPanel" class="stats-panel" aria-label="Stats"><h2>Stats</h2><div id="statsGrid" class="stats-grid"></div></section>
-    <footer><span>Silvermont: Fragments</span><span id="versionLabel">v0.8.0</span></footer>
+    <footer><span>Silvermont: Fragments</span><span id="versionLabel">v0.10.0</span></footer>
   </main>
 
   <script src="js/config.js"></script>
@@ -106,5 +105,6 @@
   <script src="js/core.js"></script>
   <script src="js/game.js"></script>
   <script src="js/v080_runtime_patch.js"></script>
+  <script src="js/v010_finalize.js"></script>
 </body>
 </html>
