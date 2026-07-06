@@ -23,7 +23,7 @@
     ui.resolutionActivity.textContent = day.activityName;
     ui.resolutionOutcome.textContent = day.outcomeLabel;
     if (icon) {
-      icon.textContent = outcomeIcon(day.outcomeKey);
+      icon.textContent = window.GameCore.outcomeIcon(day.outcomeKey);
       icon.className = `resolution-icon outcome-${day.outcomeKey || "neutral"}`;
     }
     ui.resolutionGain.textContent = `${signedDelta(day.gain)} ${day.stat}`;
