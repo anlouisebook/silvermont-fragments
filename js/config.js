@@ -1,7 +1,28 @@
 "use strict";
 
-// After GitHub Pages deployment, set this to the published site URL.
-// Example: "https://your-user.github.io/silvermont-fragments/"
-window.SILVERMONT_CONFIG = Object.freeze({
-  onlinePlayUrl: ""
-});
+window.SILVERMONT_CONFIG = Object.freeze({ onlinePlayUrl: "" });
+
+(function bootV013WhenReady() {
+  if (window.__SILVERMONT_V013_BOOT__) return;
+
+  function load(src, next) {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = next || null;
+    document.body.appendChild(script);
+  }
+
+  function waitForV012() {
+    if (!window.SilvermontClubs || !window.SilvermontEventChains) {
+      window.setTimeout(waitForV012, 50);
+      return;
+    }
+    if (window.__SILVERMONT_V013_BOOT__) return;
+    window.__SILVERMONT_V013_BOOT__ = true;
+    load("js/v013_relationships.js", () => {
+      load("js/v013_features.js", () => load("js/v013_consequences.js"));
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", waitForV012, { once: true });
+})();
