@@ -2,7 +2,7 @@
 
 window.SILVERMONT_CONFIG = Object.freeze({ onlinePlayUrl: "" });
 
-(function bootV013WhenReady() {
+(function bootFeatureLayersWhenReady() {
   if (window.__SILVERMONT_V013_BOOT__) return;
 
   function load(src, next) {
@@ -20,7 +20,11 @@ window.SILVERMONT_CONFIG = Object.freeze({ onlinePlayUrl: "" });
     if (window.__SILVERMONT_V013_BOOT__) return;
     window.__SILVERMONT_V013_BOOT__ = true;
     load("js/v013_relationships.js", () => {
-      load("js/v013_features.js", () => load("js/v013_consequences.js"));
+      load("js/v013_features.js", () => {
+        load("js/v013_consequences.js", () => {
+          load("js/v014_story.js", () => load("js/v014_debug.js"));
+        });
+      });
     });
   }
 
