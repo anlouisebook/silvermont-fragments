@@ -22,7 +22,9 @@ window.SILVERMONT_CONFIG = Object.freeze({ onlinePlayUrl: "" });
     load("js/v013_relationships.js", () => {
       load("js/v013_features.js", () => {
         load("js/v013_consequences.js", () => {
-          load("js/v014_story.js", () => load("js/v014_debug.js"));
+          load("js/v014_story.js", () => {
+            load("js/v014_debug.js", () => load("js/v014_finalize.js"));
+          });
         });
       });
     });
