@@ -2,26 +2,33 @@
 (function () {
   const eventById = (id) => STORY.events.major[id] || STORY.events.minor[id] || null;
   const clubFollowUps = {
-    scholars: "scholars_missing_citation",
-    creatives: "creatives_hidden_layer",
-    athletics: "athletics_last_lap"
+    scholars: { followUp: "scholars_missing_citation", first: "scholars_first_meeting", dayOffset: 2 },
+    creatives: { followUp: "creatives_hidden_layer", first: "creatives_first_meeting", dayOffset: 3 },
+    athletics: { followUp: "athletics_last_lap", first: "athletics_first_meeting", dayOffset: 4 }
   };
 
   // Keep the priority collision debug scenario deterministic once its prerequisites are prepared.
   const archive = eventById("mystery_archive_receipt");
   if (archive) archive.chance = 1;
 
-  // v0.12 only marked first club meetings missed. Extend that behavior to the new follow-up scenes.
+  // v0.12 only marked first club meetings missed. Extend that behavior to eligible follow-up scenes.
   document.addEventListener("click", (event) => {
     const button = event.target.closest?.(".club-skip-btn");
     if (!button || !state.clubId) return;
-    const eventId = clubFollowUps[state.clubId];
-    const followUp = eventById(eventId);
+    const config = clubFollowUps[state.clubId];
+    if (!config) return;
+    const followUp = eventById(config.followUp);
     if (!followUp) return;
+
     state.eventHistory = Array.isArray(state.eventHistory) ? state.eventHistory : [];
     state.missedEvents = Array.isArray(state.missedEvents) ? state.missedEvents : [];
-    if (!state.eventHistory.includes(eventId) && !state.missedEvents.includes(eventId)) {
-      state.missedEvents.push(eventId);
+
+    const meetingDayIndex = (Number(state.week || 1) - 1) * 7 + config.dayOffset;
+    const firstMeetingComplete = state.eventHistory.includes(config.first);
+    const followUpReached = meetingDayIndex >= Number(followUp.minDay ?? 0);
+
+    if (firstMeetingComplete && followUpReached && !state.eventHistory.includes(config.followUp) && !state.missedEvents.includes(config.followUp)) {
+      state.missedEvents.push(config.followUp);
     }
   }, true);
 
